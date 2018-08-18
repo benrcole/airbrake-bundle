@@ -52,7 +52,7 @@ class AmiAirbrakeExtension extends Extension
 
             // Exception Listener
             $container->setDefinition(
-                $container->getParameter('ami_airbrake.notifier.class'),
+                $container->getParameter('ami_airbrake.exception_listener.class'),
                 (new Definition(
                     $container->getParameter('ami_airbrake.exception_listener.class'),
                     [new Reference($container->getParameter('ami_airbrake.notifier.class')), $config['ignored_exceptions']]
@@ -67,7 +67,7 @@ class AmiAirbrakeExtension extends Extension
 
             // PHP Shutdown Listener
             $container->setDefinition(
-                $container->getParameter('ami_airbrake.notifier.class'),
+                $container->getParameter('ami_airbrake.shutdown_listener.class'),
                 (new Definition(
                     $container->getParameter('ami_airbrake.shutdown_listener.class'),
                     [new Reference($container->getParameter('ami_airbrake.notifier.class')), $config['ignored_exceptions']]
