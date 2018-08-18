@@ -36,7 +36,7 @@ class AmiAirbrakeExtension extends Extension
         if ($config['project_key']) {
             // Airbrake notifier
             $container->setDefinition(
-                'ami_airbrake.notifier',
+                $container->getParameter('ami_airbrake.notifier.class'),
                 new Definition(
                     $container->getParameter('ami_airbrake.notifier.class'),
                     [[
@@ -52,10 +52,10 @@ class AmiAirbrakeExtension extends Extension
 
             // Exception Listener
             $container->setDefinition(
-                'ami_airbrake.exception_listener',
+                $container->getParameter('ami_airbrake.notifier.class'),
                 (new Definition(
                     $container->getParameter('ami_airbrake.exception_listener.class'),
-                    [new Reference('ami_airbrake.notifier'), $config['ignored_exceptions']]
+                    [new Reference($container->getParameter('ami_airbrake.notifier.class')), $config['ignored_exceptions']]
                 ))->addTag(
                     'kernel.event_listener',
                     ['event' => 'kernel.exception', 'method' => 'onKernelException']
@@ -67,10 +67,10 @@ class AmiAirbrakeExtension extends Extension
 
             // PHP Shutdown Listener
             $container->setDefinition(
-                'ami_airbrake.shutdown_listener',
+                $container->getParameter('ami_airbrake.notifier.class'),
                 (new Definition(
                     $container->getParameter('ami_airbrake.shutdown_listener.class'),
-                    [new Reference('ami_airbrake.notifier'), $config['ignored_exceptions']]
+                    [new Reference($container->getParameter('ami_airbrake.notifier.class')), $config['ignored_exceptions']]
                 ))->addTag(
                     'kernel.event_listener',
                     ['event' => 'kernel.controller', 'method' => 'register']
